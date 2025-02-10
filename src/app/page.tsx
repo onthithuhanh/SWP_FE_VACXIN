@@ -8,6 +8,8 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import Image from "next/image";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
 // Định nghĩa type cho dữ liệu gốc từ API
 const images = [
   "https://vnvc.vn/wp-content/uploads/2024/10/banner-uu-dai-vac-xin-zona-than-kinh-mb.jpg",
@@ -15,10 +17,18 @@ const images = [
   "https://vnvc.vn/wp-content/uploads/2025/01/le-ky-ket-hop-tac-thiet-ke-nha-may-vac-xin-vnvc.jpg",
 ];
 export default function Home() {
+    const plugin =  useRef(
+      Autoplay({ delay: 2000, stopOnInteraction: true })
+    );
   return (
     <div className="bg-white">
       <div className="mx-auto px-4 sm:px-6 max-w-7xl lg:px-8 mt-4">
-        <Carousel className="w-full p-4">
+        <Carousel
+          plugins={[plugin.current]}
+          onMouseEnter={plugin.current.stop}
+          onMouseLeave={plugin.current.reset}
+          className="w-full p-4"
+        >
           <CarouselContent>
             {images.map((image, index) => (
               <CarouselItem key={index} className="basis ">

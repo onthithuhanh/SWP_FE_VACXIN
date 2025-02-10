@@ -58,7 +58,10 @@ const navigation = {
   ],
   pages: [
     { name: "Trang chủ", href: "/" },
-    { name: "Giới thiệu", href: "/product" },
+    { name: "Thông tin cơ sở ", href: "/ " },
+    { name: "Cẩm nang tiêm chủng  ", href: "/ " },
+    { name: "Dịch vụ  ", href: "/ " },
+    { name: "Bảng giá ", href: "/ " },
   ],
 };
 
@@ -287,15 +290,41 @@ export default function Header() {
                           {storedUser.username}
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem
+                        {/* <DropdownMenuItem
                           onClick={() => {
                             router.push("/my-order");
                           }}
                         >
                           Order
+                        </DropdownMenuItem> */}
+                        <DropdownMenuItem
+                          onClick={() => {
+                            router.push("/children-profile");
+                          }}
+                        >
+                          Hồ sơ trẻ em
                         </DropdownMenuItem>
-                        {/* <DropdownMenuItem>Billing</DropdownMenuItem>
-                        <DropdownMenuItem>Team</DropdownMenuItem> */}
+                        <DropdownMenuItem
+                          onClick={() => {
+                            router.push("/reaction-after-injection");
+                          }}
+                        >
+                          Phản ứng sau tiêm
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            router.push("/my-order");
+                          }}
+                        >
+                          Lịch tiêm chủng
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            router.push("/vaccination-schedule");
+                          }}
+                        >
+                          Lịch sử tiêm chủng
+                        </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => {
                             setStoredUser({
@@ -312,7 +341,7 @@ export default function Header() {
                             router.push("/login");
                           }}
                         >
-                          LogOut
+                          Đăng xuất 
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
