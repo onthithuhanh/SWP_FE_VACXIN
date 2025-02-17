@@ -1,9 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Product } from "@/lib/product";
-import { getData } from "@/api/api";
-
+import { Product } from "@/lib/product"; 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
@@ -12,15 +10,7 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    getData("/products/manage-products/?format=json")
-      .then((response) => {
-        console.log(response);
-
-        setProducts(response as Product[]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+ 
   }, []);
 
   const filteredProducts = products

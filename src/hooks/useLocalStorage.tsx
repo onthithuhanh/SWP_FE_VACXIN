@@ -6,7 +6,7 @@ export function useStorage<T>(
 ): [T, Dispatch<SetStateAction<T>>, () => Promise<void>] {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
-      const item = window.localStorage.getItem(key);
+      const item = localStorage.getItem(key);
       // Nếu có dữ liệu trong localStorage, parse nó, nếu không thì trả về initialValue
       return item ? (JSON.parse(item) as T) : initialValue;
     } catch (error) {
@@ -17,7 +17,7 @@ export function useStorage<T>(
 
   const saveStoredValue = async (value: T) => {
     try {
-      window.localStorage.setItem(key, JSON.stringify(value));
+      localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
       console.error(error);
     }
@@ -25,7 +25,7 @@ export function useStorage<T>(
 
   const loadStoredValue = async () => {
     try {
-      const item = window.localStorage.getItem(key);
+      const item = localStorage.getItem(key);
       if (item) {
         setStoredValue(JSON.parse(item) as T);
       }

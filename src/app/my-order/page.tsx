@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 import OrderCard from "@/components/OrderCard";
-import { getData } from "@/api/api";
+ 
 import { useStorage } from "@/hooks/useLocalStorage";
 import { UserLogin } from "@/lib/users";
 export interface Order {
@@ -78,17 +78,7 @@ export default function ListOrder() {
   const [loading, setLoading] = useState(true);
 
   const reloadData = () => {
-    getData(`/orders/manage-orders/?userId=${user.userid}`)
-      .then((data) => {
-        setData(data as Order[]);
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+  
   };
   useEffect(() => {
     setLoading(true);

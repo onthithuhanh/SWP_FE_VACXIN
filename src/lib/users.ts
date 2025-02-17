@@ -11,6 +11,7 @@ export type User = {
   phone: string;
   role: string;
   password: string;
+  verificationCode: string;
 };
 export type FormData = {
   email: string;

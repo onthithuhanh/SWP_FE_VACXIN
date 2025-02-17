@@ -1,6 +1,4 @@
-"use client";
-import { getData } from "@/api/api";
-
+"use client"; 
 import { Product } from "@/lib/product";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -33,15 +31,7 @@ export default function Products() {
   ]);
 
   useEffect(() => {
-    getData("/products/manage-products/?format=json")
-      .then((response) => {
-        console.log(response);
-
-        setProducts(response as Product[]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+ 
   }, []);
 
   return (
