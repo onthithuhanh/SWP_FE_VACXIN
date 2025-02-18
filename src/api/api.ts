@@ -2,21 +2,19 @@ import axios, { AxiosError } from "axios";
 
 // Tạo instance của axios với cấu hình cơ bản
 const api = axios.create({
-  baseURL: "https://gl03.sangtran.dev/",
-  // withCredentials: true,
+  baseURL: "http://localhost:8080/",
+  withCredentials: true,
 });
 
 // Thêm interceptor cho request
 api.interceptors.request.use(
   (config) => {
-    const accessToken = localStorage.getItem("user"); // Lấy token từ localStorage (hoặc nơi bạn lưu trữ)
+    const accessToken = localStorage.getItem("token"); // Lấy token từ localStorage (hoặc nơi bạn lưu trữ)
     if (accessToken) {
       console.log(JSON.parse(accessToken));
-      if (accessToken && JSON.parse(accessToken)?.access) {
-        const Token = JSON.parse(accessToken)?.access?.replace(/"/g, "");
-        console.log(Token);
+      if (accessToken !== null) {
         config.headers = config.headers || {}; // Đảm bảo headers không bị undefined
-        config.headers["Authorization"] = `Bearer ${Token}`;
+        config.headers["Authorization"] = `Bearer ${accessToken}`;
       }
     }
     return config;

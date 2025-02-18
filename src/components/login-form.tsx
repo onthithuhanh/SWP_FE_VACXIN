@@ -10,11 +10,11 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LoginFormYup } from "@/app/yup/accout"; 
+import { LoginFormYup } from "@/app/yup/accout";
 import { useStorage } from "@/hooks/useLocalStorage";
 import { useRouter } from "next/navigation";
-import { postData } from "@/api/api";
-import { UserLogin, UserLoginForm } from "@/lib/users";
+import { UserLoginForm } from "@/lib/users";
+import { authLogin } from "@/api/authApi";
 
 export function LoginForm({
   className,
@@ -22,17 +22,8 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [, setUser] = useStorage<UserLogin>("user", {
-    refresh: "",
-    access: "",
-    userid: 0,
-    username: "",
-    email: "",
-    phone: "",
-    address: "",
-    status: "",
-    accountid: 0,
-  });
+  const [, setToken] = useStorage<string|null>("token", null);
+
   const router = useRouter();
 
   const methods = useForm({
@@ -48,32 +39,24 @@ export function LoginForm({
     setLoading(true);
     try {
       // Thêm giá trị mặc định cho `address` và `image`
-      postData("/accounts/login/", data)
-        .then((response) => {
-          console.log(response);
-          const data = response as UserLogin;
-          setUser(data);
+      // Gọi API để đăng nhập
+      const response = await authLogin(data);
+      console.log(response);
+      const userData = response;
+      setToken(userData.result.token);
 
-          router.push("/");
-          toast({
-            title: "Đăng nhập thành công ",
-            description: "Bạn có thể sửa dụng các dịch vụ của chúng tôi.",
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-          toast({
-            variant: "destructive",
-            title: "Tài khoản không hợp lệ!",
-            description: "Tài khoản hoặc mật khẩu không chính xác.",
-          });
-        });
+      router.push("/");
+      toast({
+        title: "Đăng nhập thành công ",
+        description: "Bạn có thể sửa dụng các dịch vụ của chúng tôi.",
+      });
     } catch (error) {
       console.log(error);
       toast({
         variant: "destructive",
         title: "Tài khoản không hợp lệ!",
-        description: "Tài khoản hoặc mật khẩu không chính xác.",
+        description: (error as { response?: { data?: { message?: string } } })
+          ?.response?.data?.message,
       });
     } finally {
       setLoading(false);
@@ -88,13 +71,11 @@ export function LoginForm({
             <form onSubmit={handleSubmit(onSubmit)} className="p-6 md:p-8">
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-center text-center">
-                    <h1 className="text-2xl font-bold">
-                    Welcome to our service
-                    </h1>
+                  <h1 className="text-2xl font-bold">Welcome to our service</h1>
                   <p className="text-balance text-muted-foreground">Login</p>
                 </div>
                 <div className="grid gap-2">
-                    <Label htmlFor="username">Username</Label>
+                  <Label htmlFor="username">Username</Label>
                   <Input
                     id="username"
                     type="text"
@@ -106,7 +87,7 @@ export function LoginForm({
                   )}
                 </div>
                 <div className="grid gap-2">
-                    <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">Password</Label>
                   <Input
                     id="password"
                     type="password"
@@ -157,10 +138,10 @@ export function LoginForm({
                 <div className="text-center text-sm">
                   Don t have an account?{" "}
                   <Link
-                  href="/create-account"
-                  className="underline underline-offset-4"
+                    href="/create-account"
+                    className="underline underline-offset-4"
                   >
-                  Sign up now
+                    Sign up now
                   </Link>
                 </div>
               </div>

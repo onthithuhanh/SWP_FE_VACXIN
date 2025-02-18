@@ -1,6 +1,4 @@
 "use client";
-
-import { postData } from "@/api/api";
 import { useStorage } from "@/hooks/useLocalStorage";
 import { Product } from "@/lib/product";
 import { UserLogin } from "@/lib/users";
@@ -89,29 +87,7 @@ export default function CheckoutForms() {
         accountId: user.userid,
       });
 
-      postData("/orders/manage-order/", {
-        order_details: products.map((product) => ({
-          quantity: product.quantity,
-          price: product.price.toString().replace("$", ""),
-          productId: product.id,
-        })),
-        amount: totalAmount,
-        description: "Order description",
-        content: "Order content",
-        notes: notes,
-        method: "vnpay",
-        redirect_url: "https://asm-phython-fe.vercel.app/order",
-        accountId: user.userid,
-      })
-        .then((response) => {
-          const data = response as { payment_url: string };
-          if (!data.payment_url) return;
-          window.location.href = data.payment_url;
-        })
-        .catch((error) => {
-          console.error("Error placing order:", error);
-          setError("Failed to place the order. Please try again.");
-        });
+    
       // Redirect to order confirmation page
     } catch (error) {
       console.error("Error placing order:", error);

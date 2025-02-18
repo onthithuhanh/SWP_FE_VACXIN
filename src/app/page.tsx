@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
-import { useActionState, useRef } from "react";
+import { useRef } from "react";
 
 // Định nghĩa type cho dữ liệu gốc từ API
 const images = [
@@ -18,36 +18,10 @@ const images = [
   "https://vnvc.vn/wp-content/uploads/2025/01/le-ky-ket-hop-tac-thiet-ke-nha-may-vac-xin-vnvc.jpg",
 ];
 
-async function increment(
-  states: { success: string; isLoading: boolean },
-  formData: FormData
-) {
-
-  console.log(" Data",); 
-  console.log("formData", formData.get("name"));
-  console.log(states);
-  return { success: `Đăng ký thành công`, isLoading: false };
-}
 export default function Home() {
-  const [state, formAction] = useActionState(increment, {
-    success: "",
-    isLoading: false,
-  });
   const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
   return (
     <div className="bg-white">
-      <form action={formAction} className="flex justify-center">
-        <input
-          type="text"
-          name="name"
-          required
-          className="border-2 border-gray-300 p-2"
-        />
-        {state.success && <p style={{ color: "red" }}>{state.success}</p>}
-        <button type="submit" className="bg-blue-500 text-white p-2">
-          Submit
-        </button>
-      </form>
       <div className="mx-auto px-4 sm:px-6 max-w-7xl lg:px-8 mt-4">
         <Carousel
           plugins={[plugin.current]}

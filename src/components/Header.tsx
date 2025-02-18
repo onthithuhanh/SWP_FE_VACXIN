@@ -28,6 +28,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { UserLogin } from "@/lib/users";
 import { Calendar, MapPin } from "lucide-react";
 import Image from "next/image";
+import { getMyInfo } from "@/api/usersApi";
 
 const navigation = {
   categories: [
@@ -79,30 +80,20 @@ export default function Header() {
     status: "",
     accountid: 0,
   });
-  const [storedUser, setStoredUser, loadStoredUser] = useStorage<UserLogin>(
-    "user",
-    {
-      refresh: "",
-      access: "",
-      userid: 0,
-      username: "",
-      email: "",
-      phone: "",
-      address: "",
-      status: "",
-      accountid: 0,
-    }
-  );
+  const [token, setToken] = useStorage<string | null>("token", null);
+
   const pathname = usePathname();
   const router = useRouter();
-  useEffect(() => {
-    setUser(storedUser);
-  }, [storedUser, pathname]);
+  useEffect(() => {}, [pathname]);
 
   useEffect(() => {
-    loadStoredUser();
-  }, [pathname]);
-  console.log(pathname);
+    if (token) {
+      getMyInfo().then((res) => {
+        setUser(res);
+        console.log(res);
+      });
+    }
+  }, [token]);
 
   return (
     <div className="bg-white">
@@ -259,7 +250,7 @@ export default function Header() {
                     ))}
                   </div>
                 </PopoverGroup>
-                {user?.access ? (
+                {token ? (
                   <div className="ml-auto gap-4 flex items-center">
                     <div className="ml-4 flow-root lg:ml-6">
                       <Link
@@ -286,9 +277,7 @@ export default function Header() {
                       </DropdownMenuTrigger>
 
                       <DropdownMenuContent>
-                        <DropdownMenuLabel>
-                          {storedUser.username}
-                        </DropdownMenuLabel>
+                        <DropdownMenuLabel>{user.username}</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         {/* <DropdownMenuItem
                           onClick={() => {
@@ -327,21 +316,11 @@ export default function Header() {
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => {
-                            setStoredUser({
-                              refresh: "",
-                              access: "",
-                              userid: 0,
-                              username: "",
-                              email: "",
-                              phone: "",
-                              address: "",
-                              status: "",
-                              accountid: 0,
-                            });
+                            setToken(null);
                             router.push("/login");
                           }}
                         >
-                          Đăng xuất 
+                          Đăng xuất
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
