@@ -11,10 +11,10 @@ api.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem("token"); // Lấy token từ localStorage (hoặc nơi bạn lưu trữ)
     if (accessToken) {
-      console.log(JSON.parse(accessToken));
-      if (accessToken !== null) {
+      if (accessToken !== "null") {
+        console.log(JSON.parse(accessToken));
         config.headers = config.headers || {}; // Đảm bảo headers không bị undefined
-        config.headers["Authorization"] = `Bearer ${accessToken}`;
+        config.headers["Authorization"] = `Bearer ${JSON.parse(accessToken)}`;
       }
     }
     return config;

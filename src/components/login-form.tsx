@@ -149,7 +149,7 @@ export function LoginForm({
           </FormProvider>
           <div className="relative hidden bg-muted md:block">
             <Image
-              src="/img/FSB0278.jpg"
+              src="https://vnvc.vn/wp-content/uploads/2023/02/tiem-ngua-cho-tre-so-sinh-1.jpg"
               alt="Image"
               width={400}
               height={400}

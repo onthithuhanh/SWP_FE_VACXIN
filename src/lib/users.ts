@@ -16,9 +16,10 @@ export type User = {
 export type FormData = {
   email: string;
   username: string;
-  last_name: string;
-  first_name: string;
+  fullname: string;
   phone: string;
+  bod: string;
+  gender: string;
   password: string;
 };
 export type UserLoginForm = {

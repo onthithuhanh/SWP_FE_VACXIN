@@ -5,18 +5,13 @@ export const Accout = yup.object().shape({
     .string()
     .email("Email không hợp lệ")
     .required("Vui lòng nhập email"),
-  username: yup
+  username: yup.string().required("Vui lòng nhập username"),
+  bod: yup.string().required("Vui lòng nhập ngày sinh"),
+  gender: yup.string().required("Vui lòng chọn giới tính"),
+  fullname: yup
     .string()
 
-    .required("Vui lòng nhập username"),
-  last_name: yup
-    .string()
-
-    .required("Vui lòng nhập email"),
-  first_name: yup
-    .string()
-
-    .required("Vui lòng nhập email"),
+    .required("Vui lòng nhập Họ và tên"),
   phone: yup
     .string()
     .matches(/^\d{10,11}$/, "Số điện thoại không hợp lệ")

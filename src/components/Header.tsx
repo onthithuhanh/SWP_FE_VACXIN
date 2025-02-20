@@ -69,31 +69,24 @@ const navigation = {
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [user, setUser] = useState<UserLogin>({
-    refresh: "",
-    access: "",
-    userid: 0,
-    username: "",
-    email: "",
-    phone: "",
-    address: "",
-    status: "",
-    accountid: 0,
-  });
-  const [token, setToken] = useStorage<string | null>("token", null);
+  const [user, setUser] = useState<UserLogin>();
+  const [token, setToken, loadToken] = useStorage<string | null>("token", null);
 
   const pathname = usePathname();
   const router = useRouter();
-  useEffect(() => {}, [pathname]);
+  useEffect(() => {
+    loadToken();
+  }, [pathname]);
 
   useEffect(() => {
     if (token) {
       getMyInfo().then((res) => {
-        setUser(res);
+        setUser(res.result);
         console.log(res);
       });
     }
   }, [token]);
+
 
   return (
     <div className="bg-white">
@@ -250,7 +243,8 @@ export default function Header() {
                     ))}
                   </div>
                 </PopoverGroup>
-                {token ? (
+
+                {user?.username ? (
                   <div className="ml-auto gap-4 flex items-center">
                     <div className="ml-4 flow-root lg:ml-6">
                       <Link
@@ -277,7 +271,7 @@ export default function Header() {
                       </DropdownMenuTrigger>
 
                       <DropdownMenuContent>
-                        <DropdownMenuLabel>{user.username}</DropdownMenuLabel>
+                        <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         {/* <DropdownMenuItem
                           onClick={() => {

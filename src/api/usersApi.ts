@@ -1,5 +1,5 @@
 // src/services/userService.ts
-import { User } from "@/lib/users";
+import { FormData, User } from "@/lib/users";
 import apiClient from "./api";
 
 export const getMyInfo = async () => {
@@ -26,7 +26,7 @@ export const getUserById = async (id: string) => {
   return response.data;
 };
 
-export const createUser = async (userData: User) => {
+export const createUser = async (userData: FormData) => {
   const response = await apiClient.post("/users/createUser", userData);
   return response.data;
 };
