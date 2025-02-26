@@ -12,14 +12,23 @@ import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { FormData } from "@/lib/users";
-import { createUser } from "@/api/usersApi";
-
+import { createUser, verifyUser } from "@/api/usersApi";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 export function CreatAccoutForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
+  const [verificationCode, setVerificationCode] = useState<string>("");
   const methods = useForm({
     resolver: yupResolver(Accout),
   });
@@ -27,7 +36,7 @@ export function CreatAccoutForm({
     handleSubmit,
     register,
     formState: { errors },
-  } = methods;
+  } = methods; 
 
   const onSubmit = async (data: FormData) => {
     setLoading(true);
@@ -35,33 +44,78 @@ export function CreatAccoutForm({
       // Add default values for `address` and `image`
 
       const response = await createUser(data);
-
-      if (response.status === 201) {
+      console.log(response);
+      setEmail(data.email);
+      if (response.code === 1000) {
         toast({
-          title: "Account created successfully!",
-          description: "You can log in now.",
+          title: "Đăng ký thành công!",
+          description: "Vui lòng kiểm tra email để xác thực tài khoản.",
         });
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Error!",
-          description: "Unable to create account. Please try again.",
-        });
+        setOpen(true);
       }
     } catch (error) {
       console.log(error);
       toast({
         variant: "destructive",
-        title: "Error!",
-        description: "An error occurred while creating the account.",
+        title: "Lỗi!",
+        description:
+          (error as { response?: { data?: { message?: string } } }).response
+            ?.data?.message || "An unexpected error occurred.",
       });
     } finally {
       setLoading(false);
     }
   };
-
+  const onVerify = async () => {
+    setLoading(true);
+    try {
+      // Add default values for `address` and `image` 
+      const response = await verifyUser({ email, verificationCode });
+      console.log(response);
+      if (response.code) {
+        toast({
+          title: "Xác thực thành công!",
+          description: "Vui lòng đăng nhập để sử dụng tài khoản.",
+        });
+        setOpen(true);
+      }
+    } catch (error) {
+      console.log(error);
+      toast({
+        variant: "destructive",
+        title: "Lỗi!",
+        description:
+          (error as { response?: { data?: { message?: string } } }).response
+            ?.data?.message || "Vui lòng kiểm tra lại.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Xác thực địa chỉ mail</DialogTitle>
+            <DialogDescription>
+              <div className="flex flex-col gap-4">
+                <Label htmlFor="code">Mã xác thực</Label>
+
+                <Input
+                  id="code"
+                  type="text"
+                  onChange={(e) => setVerificationCode(e.target.value)}
+                  placeholder="Mã xác thực"
+                />
+                <Button onClick={onVerify} className="w-full">
+                  {loading ? "Processing..." : "Xác thực"}
+                </Button>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
       <Card className="overflow-hidden">
         <CardContent className="grid p-0 md:grid-cols-2">
           <FormProvider {...methods}>

@@ -1,24 +1,23 @@
+import Image from "next/image";
+
 const incentives = [
   {
-    name: "Free shipping",
-    imageSrc:
-      "https://twui.tkgiare.com/plus/img/ecommerce/icons/icon-shipping-simple.svg",
+    name: "Đảm bảo an toàn",
+    imageSrc: "/img/a2.png",
     description:
-      "It's not actually free we just price it into the products. Someone's paying for it, and it's not us.",
+      "Chúng tôi đảm bảo tất cả các loại vacxin đều được kiểm định và chứng nhận an toàn cho trẻ nhỏ.",
   },
   {
-    name: "10-year warranty",
-    imageSrc:
-      "https://twui.tkgiare.com/plus/img/ecommerce/icons/icon-warranty-simple.svg",
+    name: "Tận tâm chăm sóc",
+    imageSrc: "/img/a1.png",
     description:
-      "If it breaks in the first 10 years we'll replace it. After that you're on your own though.",
+      "Đội ngũ y bác sĩ của chúng tôi luôn tận tâm chăm sóc và tư vấn cho bạn về các loại vacxin phù hợp nhất.",
   },
   {
-    name: "Exchanges",
-    imageSrc:
-      "https://twui.tkgiare.com/plus/img/ecommerce/icons/icon-exchange-simple.svg",
+    name: "Dịch vụ chuyên nghiệp",
+    imageSrc: "/img/a3.jpg",
     description:
-      "If you don't like it, trade it to one of your friends for something of theirs. Don't send it here though.",
+      "Chúng tôi cung cấp dịch vụ chuyên nghiệp, đảm bảo quá trình tiêm chủng diễn ra an toàn và hiệu quả.",
   },
 ];
 
@@ -29,20 +28,18 @@ export default function Incentives() {
         <div className="mx-auto max-w-2xl px-4 lg:max-w-none">
           <div className="grid grid-cols-1 items-center gap-x-16 gap-y-10 lg:grid-cols-2">
             <div>
-              <h2 className="text-4xl font-bold tracking-tight text-gray-900">
-                We built our business on great customer service
-              </h2>
-              <p className="mt-4 text-gray-500">
-                At the beginning at least, but then we realized we could make a
-                lot more money if we kinda stopped caring about that. Our new
-                strategy is to write a bunch of things that look really good in
-                the headlines, then clarify in the small print but hope people
-                dont actually read it.
-              </p>
+                <h2 className="text-4xl font-bold tracking-tight text-gray-900">
+                Chúng tôi xây dựng dịch vụ dựa trên sự an toàn của trẻ nhỏ
+                </h2>
+                <p className="mt-4 text-gray-500">
+                Tại Vacxin cho trẻ nhỏ, chúng tôi cam kết mang đến những loại vacxin an toàn và hiệu quả nhất cho con bạn. Sự an toàn và sức khỏe của trẻ nhỏ luôn là ưu tiên hàng đầu của chúng tôi.
+                </p>
             </div>
-            <img
+            <Image
+              width={500}
+              height={500}
               alt=""
-              src="https://twui.tkgiare.com/plus/img/ecommerce-images/incentives-07-hero.jpg"
+              src="/img/a2.png"
               className="aspect-[3/2] w-full rounded-lg bg-gray-100 object-cover"
             />
           </div>
@@ -50,7 +47,13 @@ export default function Incentives() {
             {incentives.map((incentive) => (
               <div key={incentive.name} className="sm:flex lg:block">
                 <div className="sm:shrink-0">
-                  <img alt="" src={incentive.imageSrc} className="size-16" />
+                  <Image
+                    alt=""
+                    width={500}
+                    height={500}
+                    src={incentive.imageSrc}
+                    className="size-16"
+                  />
                 </div>
                 <div className="mt-4 sm:ml-6 sm:mt-0 lg:ml-0 lg:mt-6">
                   <h3 className="text-sm font-medium text-gray-900">

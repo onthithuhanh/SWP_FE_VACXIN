@@ -61,7 +61,7 @@ const navigation = {
     { name: "Trang chủ", href: "/" },
     { name: "Thông tin cơ sở ", href: "/ " },
     { name: "Cẩm nang tiêm chủng  ", href: "/ " },
-    { name: "Dịch vụ  ", href: "/ " },
+    { name: "Dịch vụ  ", href: "/vaccine" },
     { name: "Bảng giá ", href: "/ " },
   ],
 };

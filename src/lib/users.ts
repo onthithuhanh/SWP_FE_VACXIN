@@ -13,6 +13,11 @@ export type User = {
   password: string;
   verificationCode: string;
 };
+
+export type VerifyUser = {
+  email: string; 
+  verificationCode: string;
+};
 export type FormData = {
   email: string;
   username: string;

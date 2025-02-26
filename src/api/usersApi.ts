@@ -1,5 +1,5 @@
 // src/services/userService.ts
-import { FormData, User } from "@/lib/users";
+import { FormData, User, VerifyUser } from "@/lib/users";
 import apiClient from "./api";
 
 export const getMyInfo = async () => {
@@ -11,8 +11,8 @@ export const getUserChildProfile = async (id: string) => {
   const response = await apiClient.get(`/users/${id}/child-profile`);
   return response.data;
 };
-export const verifyUser = async (data: User) => {
-  const response = await apiClient.post(`/users/verify`, data);
+export const verifyUser = async (data: VerifyUser) => {
+  const response = await apiClient.post(`/auth/verify`, data);
   return response.data;
 };
 
@@ -27,7 +27,7 @@ export const getUserById = async (id: string) => {
 };
 
 export const createUser = async (userData: FormData) => {
-  const response = await apiClient.post("/users/createUser", userData);
+  const response = await apiClient.post("/home/createUser", userData);
   return response.data;
 };
 
