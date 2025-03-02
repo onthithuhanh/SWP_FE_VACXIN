@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
+import Posts from "@/components/post";
 
 // Định nghĩa type cho dữ liệu gốc từ API
 const images = [
@@ -48,6 +49,7 @@ export default function Home() {
         </Carousel>
       </div>
       <CategoryPreviews />
+      <Posts />
       <Products />
     </div>
   );

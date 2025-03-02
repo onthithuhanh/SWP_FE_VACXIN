@@ -1,8 +1,27 @@
 "use client";
+import { getVaccineById } from "@/api/vacxin";
+import { Product } from "@/lib/product";
 import { ChevronRight } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 export default function VaccineDetail() {
   // Smooth scroll to section when clicking on sidebar links
+  const [product, setProduct] = useState<Product>();
+  const { id } = useParams<{ id: string }>();
+  const fetchProduct = useCallback(async () => {
+    try {
+      const response = await getVaccineById(id);
+      setProduct(response?.result);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [id]);
+  useEffect(() => {
+    fetchProduct();
+  }, [fetchProduct]);
+  console.log(product);
+
   const scrollToSection = (elementId: string) => {
     const element = document.getElementById(elementId);
     if (element) {
@@ -81,9 +100,7 @@ export default function VaccineDetail() {
           <div className="rounded-lg border bg-white">
             {/* Header */}
             <div className="border-b p-4">
-              <h1 className="text-xl font-bold">
-                Vắc xin Qdenga (Takeda, Nhật Bản)
-              </h1>
+              <h1 className="text-xl font-bold">{product?.title}</h1>
             </div>
 
             {/* Content Sections */}
@@ -94,10 +111,7 @@ export default function VaccineDetail() {
                   1. Thông tin vắc xin
                 </div>
                 <div className="p-4">
-                  <p className="text-gray-600">
-                    Vắc xin Qdenga là vắc xin phòng bệnh sốt xuất huyết được sản
-                    xuất bởi hãng dược phẩm Takeda, Nhật Bản.
-                  </p>
+                  <p className="text-gray-600">{product?.description}</p>
                 </div>
               </section>
 
@@ -107,9 +121,7 @@ export default function VaccineDetail() {
                   2. Đối tượng
                 </div>
                 <div className="p-4">
-                  <p className="text-gray-600">
-                    Vắc xin được chỉ định cho người từ 4 tuổi trở lên.
-                  </p>
+                  <p className="text-gray-600">{product?.targetGroup}</p>
                 </div>
               </section>
 
@@ -120,8 +132,7 @@ export default function VaccineDetail() {
                 </div>
                 <div className="p-4">
                   <ul className="list-disc pl-5 text-gray-600">
-                    <li>Mũi 1: Tại thời điểm bắt đầu tiêm</li>
-                    <li>Mũi 2: Sau mũi 1 ba tháng</li>
+                    {product?.schedule}
                   </ul>
                 </div>
               </section>
@@ -133,7 +144,7 @@ export default function VaccineDetail() {
                 </div>
                 <div className="p-4">
                   <p className="text-gray-600">
-                    Các phản ứng có thể gặp: Đau tại chỗ tiêm, sốt nhẹ, mệt mỏi.
+                    {product?.sideEffects || "Không có phản ứng phụ."}
                   </p>
                 </div>
               </section>
@@ -145,7 +156,9 @@ export default function VaccineDetail() {
                 </div>
                 <div className="p-4">
                   <p className="text-gray-600">
-                    Hiện có sẵn tại các cơ sở tiêm chủng.
+                    {product?.stock === 0
+                      ? "Hết hàng"
+                      : " Hiện có sẵn tại các cơ sở tiêm chủng."}
                   </p>
                 </div>
               </section>

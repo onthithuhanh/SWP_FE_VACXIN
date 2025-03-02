@@ -1,16 +1,21 @@
 export interface Product {
   id: number;
-  images: Image[];
-  is_deleted: boolean;
-  name: string;
-  price: number;
+  title: string;
   description: string;
-  quantity: number;
-  slug: string;
-  created_at: string;
-  is_active: boolean;
-  category: Category;
-  selected: boolean;
+  category: string;
+  price: number;
+  stock: number;
+  image: string;
+  discount: number;
+  discountPrice: number;
+  isActive: boolean;
+  manufacturer: string;
+  targetGroup: string;
+  schedule: string;
+  sideEffects: string;
+  available: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Image {

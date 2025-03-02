@@ -27,6 +27,6 @@ export const LoginFormYup = yup.object().shape({
   username: yup.string().required("Vui lòng nhập username"),
   password: yup
     .string()
-    .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+    .min(3, "Mật khẩu phải có ít nhất 6 ký tự")
     .required("Vui lòng nhập mật khẩu"),
 });

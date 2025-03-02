@@ -36,7 +36,7 @@ export function CreatAccoutForm({
     handleSubmit,
     register,
     formState: { errors },
-  } = methods; 
+  } = methods;
 
   const onSubmit = async (data: FormData) => {
     setLoading(true);
@@ -69,7 +69,7 @@ export function CreatAccoutForm({
   const onVerify = async () => {
     setLoading(true);
     try {
-      // Add default values for `address` and `image` 
+      // Add default values for `address` and `image`
       const response = await verifyUser({ email, verificationCode });
       console.log(response);
       if (response.code) {
@@ -77,7 +77,7 @@ export function CreatAccoutForm({
           title: "Xác thực thành công!",
           description: "Vui lòng đăng nhập để sử dụng tài khoản.",
         });
-        setOpen(true);
+        setOpen(false);
       }
     } catch (error) {
       console.log(error);
@@ -94,7 +94,7 @@ export function CreatAccoutForm({
   };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Xác thực địa chỉ mail</DialogTitle>
@@ -110,6 +110,9 @@ export function CreatAccoutForm({
                 />
                 <Button onClick={onVerify} className="w-full">
                   {loading ? "Processing..." : "Xác thực"}
+                </Button>
+                <Button  onClick={() => setOpen(false)} className="w-full bg-red-500">
+                  Hủy bỏ
                 </Button>
               </div>
             </DialogDescription>

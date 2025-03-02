@@ -12,7 +12,7 @@ export const getUserChildProfile = async (id: string) => {
   return response.data;
 };
 export const verifyUser = async (data: VerifyUser) => {
-  const response = await apiClient.post(`/auth/verify`, data);
+  const response = await apiClient.post(`/common/verify`, data);
   return response.data;
 };
 
@@ -27,7 +27,7 @@ export const getUserById = async (id: string) => {
 };
 
 export const createUser = async (userData: FormData) => {
-  const response = await apiClient.post("/home/createUser", userData);
+  const response = await apiClient.post("/common/createUser", userData);
   return response.data;
 };
 
