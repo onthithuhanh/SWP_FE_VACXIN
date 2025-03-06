@@ -1,12 +1,7 @@
-interface SelectedVaccine {
-  name: string;
-  disease: string;
-  origin: string;
-  price: number;
-}
+import { Product } from "@/lib/product";
 
 interface SelectedVaccinesProps {
-  vaccines: SelectedVaccine[];
+  vaccines: Product[];
   onRemove: (index: number) => void;
 }
 
@@ -36,7 +31,7 @@ export function SelectedVaccines({
           <div key={index} className="border-b pb-4">
             <div className="flex justify-between items-start mb-2">
               <h3 className="text-[#1a237e] font-medium flex-1">
-                {vaccine.name}
+                {vaccine.title}
               </h3>
               <button
                 onClick={() => onRemove(index)}
@@ -46,10 +41,10 @@ export function SelectedVaccines({
               </button>
             </div>
             <div className="text-sm text-gray-600">
-              Phòng bệnh: {vaccine.disease}
+              Tác dụng phụ: {vaccine.sideEffects}
             </div>
             <div className="text-sm text-gray-600">
-              Nguồn gốc: {vaccine.origin}
+              Nguồn gốc: {vaccine.manufacturer}
             </div>
             <div className="text-[#1a237e] font-medium mt-2">
               {new Intl.NumberFormat("vi-VN").format(vaccine.price)} VND

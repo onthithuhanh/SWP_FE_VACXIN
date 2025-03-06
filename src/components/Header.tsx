@@ -69,7 +69,7 @@ const navigation = {
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [user, setUser] = useState<UserLogin>();
+  const [user, setUser] = useState<UserLogin | null>(null);
   const [token, setToken, loadToken] = useStorage<string | null>("token", null);
 
   const pathname = usePathname();
@@ -120,7 +120,7 @@ export default function Header() {
               </div>
 
               <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                {navigation.pages.map((page) => (
+                {navigation?.pages.map((page) => (
                   <div key={page.name} className="flow-root">
                     <Link
                       href={page.href}

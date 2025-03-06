@@ -49,10 +49,13 @@ export default function Products() {
                 <p className="text-sm text-gray-500">{product.description}</p>
                 <div className="flex flex-1 flex-col justify-end">
                   <p className="text-sm italic text-gray-500">
-                    Dạng vắc xin:{product.category}
+                    Dạng vắc xin:{product.categoryName}
                   </p>
                   <p className="text-base font-medium text-gray-900">
-                    {product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                    {product.price.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
                   </p>
                 </div>
               </div>

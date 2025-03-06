@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { VaccineCard } from "@/components/vaccine-card";
 import { SelectedVaccines } from "@/components/selected-vaccines";
 import { Menu, Search } from "lucide-react";
@@ -12,42 +12,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Product } from "@/lib/product";
+import { getVaccines } from "@/api/vacxin";
 
-const vaccines = [
-  {
-    name: "VẮC XIN SHINGRIX PHÒNG BỆNH ZONA THẦN KINH",
-    origin: "GSK (Bỉ)",
-    disease: "Zona thần kinh",
-    price: 3890000,
-  },
-  {
-    name: "VẮC XIN PHÒNG BỆNH SỐT XUẤT HUYẾT QDENGA",
-    origin: "Takeda (Germany)",
-    disease: "Sốt xuất huyết",
-    price: 1390000,
-  },
-  {
-    name: "VẮC XIN PRIORIX PHÒNG BỆNH SỞI - QUAI BỊ",
-    origin: "GSK (Bỉ)",
-    disease: "Sởi - quai bị - rubella",
-    price: 495000,
-  },
-];
-
+ 
 export default function Vaccines() {
-  const [selectedVaccines, setSelectedVaccines] = useState<typeof vaccines>([]);
+  const [selectedVaccines, setSelectedVaccines] = useState<Product[]>([]);
 
-  const toggleSelection = (vaccine: (typeof vaccines)[0]) => {
-    const index = selectedVaccines.findIndex((v) => v.name === vaccine.name);
+  const [products, setProducts] = useState<Product[]>([]);
+  const toggleSelection = (vaccine: (typeof products)[0]) => {
+    const index = selectedVaccines.findIndex((v) => v.title === vaccine.title);
     if (index === -1) {
       setSelectedVaccines([...selectedVaccines, vaccine]);
     } else {
       setSelectedVaccines(
-        selectedVaccines.filter((v) => v.name !== vaccine.name)
+        selectedVaccines.filter((v) => v.title !== vaccine.title)
       );
     }
   };
 
+  const fetchProducts = useCallback(async () => {
+    try {
+      const response = await getVaccines();
+      setProducts(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="flex items-center gap-4 mb-8">
@@ -88,12 +83,12 @@ export default function Vaccines() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <div className="lg:col-span-3">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {vaccines.map((vaccine) => (
+            {products.map((vaccine) => (
               <VaccineCard
-                key={vaccine.name}
+                key={vaccine.title}
                 {...vaccine}
                 isSelected={selectedVaccines.some(
-                  (v) => v.name === vaccine.name
+                  (v) => v.title === vaccine.title
                 )}
                 onSelect={() => toggleSelection(vaccine)}
               />

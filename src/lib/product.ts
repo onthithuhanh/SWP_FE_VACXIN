@@ -2,7 +2,8 @@ export interface Product {
   id: number;
   title: string;
   description: string;
-  category: string;
+  category: Category;
+  categoryName: string;
   price: number;
   stock: number;
   image: string;
@@ -16,17 +17,19 @@ export interface Product {
   available: boolean;
   createdAt: string;
   updatedAt: string;
+  isSelected: boolean;
+  onSelect: () => void;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  imageName: string;
+  isActive: boolean;
 }
 
 export interface Image {
   id: number;
   image: string;
   created_at: string;
-}
-
-export interface Category {
-  id: number;
-  name: string;
-  slug: string;
-  is_deleted: boolean;
 }
