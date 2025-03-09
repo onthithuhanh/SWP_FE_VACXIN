@@ -5,13 +5,13 @@ import { VaccineCard } from "@/components/vaccine-card";
 import { SelectedVaccines } from "@/components/selected-vaccines";
 import { Menu, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import { Product } from "@/lib/product";
 import { getVaccines } from "@/api/vacxin";
 
@@ -64,7 +64,7 @@ export default function Vaccines() {
         </div>
       </div>
 
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <label className="text-sm text-gray-600 mb-2 block">
           Hiển thị theo
         </label>
@@ -78,7 +78,7 @@ export default function Vaccines() {
             <SelectItem value="price-desc">Giá giảm dần</SelectItem>
           </SelectContent>
         </Select>
-      </div>
+      </div> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <div className="lg:col-span-3">

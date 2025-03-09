@@ -45,8 +45,11 @@ export function CreatAccoutForm({
 
       const response = await createUser(data);
       console.log(response);
+      console.log(response.code);
       setEmail(data.email);
-      if (response.code === 1000) {
+      if (response.code === 0) {
+      console.log(response);
+
         toast({
           title: "Đăng ký thành công!",
           description: "Vui lòng kiểm tra email để xác thực tài khoản.",
@@ -72,7 +75,7 @@ export function CreatAccoutForm({
       // Add default values for `address` and `image`
       const response = await verifyUser({ email, verificationCode });
       console.log(response);
-      if (response.code) {
+      if (response) {
         toast({
           title: "Xác thực thành công!",
           description: "Vui lòng đăng nhập để sử dụng tài khoản.",

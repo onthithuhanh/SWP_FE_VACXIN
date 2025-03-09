@@ -18,7 +18,7 @@ export type VerifyUser = {
   email: string; 
   verificationCode: string;
 };
-export type FormData = {
+export type FormData = { 
   email: string;
   username: string;
   fullname: string;

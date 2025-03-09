@@ -24,9 +24,17 @@ export default function Products() {
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:max-w-7xl lg:px-8">
-        <h2 className="text-2xl pb-2 font-bold tracking-tight text-gray-900">
-          DANH MỤC VẮC XIN
-        </h2>
+        <div className="flex justify-between">
+          <h2 className="text-2xl pb-2 font-bold tracking-tight text-gray-900">
+            DANH MỤC VẮC XIN
+          </h2>
+          <Link
+            href="/product"
+            className="text-blue-500 hover:underline"
+          >
+            tất cả sản phẩm
+          </Link>
+        </div>
 
         <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
           {products.map((product) => (
