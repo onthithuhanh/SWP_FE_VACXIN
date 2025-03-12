@@ -1,52 +1,55 @@
 "use client";
-import { useStorage } from "@/hooks/useLocalStorage";
+import { getMyChildren } from "@/api/childrenApi";
+import { getUrlPayment } from "@/api/order";
+import { Children } from "@/lib/children";
 import { Product } from "@/lib/product";
-import { UserLogin } from "@/lib/users";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function CheckoutForms() {
   const searchParams = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
-  const [user] = useStorage<UserLogin>("user", {
-    refresh: "",
-    access: "",
-    userid: 0,
-    username: "",
-    email: "",
-    phone: "",
-    address: "",
-    status: "",
-    accountid: 0,
-  });
+  const [children, setChildren] = useState<Children[]>([]);
+  const fetchChildren = useCallback(async () => {
+    try {
+      const response = await getMyChildren();
+      setChildren(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+  console.log(children);
 
+  useEffect(() => {
+    fetchChildren();
+  }, [fetchChildren]);
   const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    phone: "",
-    notes: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    mobileNo: "",
+    childId: 0,
     terms: false,
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const productsData = searchParams.get("products");
+    const productsData = searchParams.get("order");
     if (productsData) {
       setProducts(JSON.parse(decodeURIComponent(productsData)));
     }
   }, [searchParams]);
 
   const totalAmount = products.reduce((sum, product) => {
-    return (
-      sum +
-      parseFloat(product.price.toString().replace("$", "")) * product.quantity
-    );
+    return sum + parseFloat(product?.price?.toString().replace("$", "")) * 1;
   }, 0);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value, type, checked } = e.target as HTMLInputElement;
     setFormData((prev) => ({
@@ -59,13 +62,13 @@ export default function CheckoutForms() {
     e.preventDefault();
     setError("");
 
-    const { name, address, phone, notes, terms } = formData;
-    if (!name || !address || !phone || !notes) {
-      setError("Please fill in all the required fields.");
+    const { firstName, mobileNo, email, lastName, terms, childId } = formData;
+    if (!firstName || !mobileNo || !email || !lastName || !childId) {
+      setError("Vui lòng nhập hết thông tin");
       return;
     }
     if (!terms) {
-      setError("You must agree to the terms and conditions.");
+      setError("Vui lòng đồng ý với điều khoản");
       return;
     }
 
@@ -74,21 +77,39 @@ export default function CheckoutForms() {
     try {
       console.log({
         order_details: products.map((product) => ({
-          quantity: product.quantity,
+          quantity: 1,
           price: product.price.toString().replace("$", ""),
           productId: product.id,
         })),
-        amount: totalAmount,
-        description: "Order description",
-        content: "Order content",
-        notes: notes,
-        method: "vnpay",
-        redirect_url: "https://asm-phython-fe.vercel.app/order",
-        accountId: user.userid,
-      });
 
-    
-      // Redirect to order confirmation page
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        mobileNo: mobileNo,
+        paymentType: "string",
+        childId: childId,
+      });
+      const data = {
+        order_details: products.map((product) => ({
+          quantity: 1,
+          price: product.price.toString().replace("$", ""),
+          productId: product.id,
+        })),
+
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        mobileNo: mobileNo,
+        paymentType: "string",
+        childId: childId,
+      };
+      const url = products
+        .map((product) => `productId=${product.id}&quantity=1`)
+        .join("&");
+      console.log(url);
+      const response = await getUrlPayment(url, data);
+      console.log(response);
+      window.location.href = response.url;
     } catch (error) {
       console.error("Error placing order:", error);
       setError("Failed to place the order. Please try again.");
@@ -96,6 +117,7 @@ export default function CheckoutForms() {
       setLoading(false);
     }
   };
+  console.log(products);
 
   return (
     <div className="bg-white">
@@ -109,20 +131,18 @@ export default function CheckoutForms() {
               {products.map((product) => (
                 <li key={product.id} className="flex space-x-6 py-6">
                   <img
-                    alt={product.name}
-                    src={product.images[0]?.image || "/fallback-image.png"}
+                    alt={product.image}
+                    src={product.image || "/fallback-image.png"}
                     className="size-24 flex-none rounded-md bg-gray-100 object-cover"
                   />
                   <div className="flex-auto">
                     <h3 className="text-gray-900">
                       <Link href={`/product/${product.id}`}>
-                        {product.name}
+                        {product.title}
                       </Link>
                     </h3>
                     <p className="text-gray-900">{product.price}</p>
-                    <p className="text-gray-500">
-                      Quantity: {product.quantity}
-                    </p>
+                    <p className="text-gray-500">Quantity: 1</p>
                   </div>
                 </li>
               ))}
@@ -148,30 +168,30 @@ export default function CheckoutForms() {
               {error && <p className="text-red-500 mt-2">{error}</p>}
               <div className="mt-6">
                 <label
-                  htmlFor="name"
+                  htmlFor="firstName"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Name
+                  Tên
                 </label>
                 <input
-                  id="name"
-                  name="name"
-                  value={formData.name}
+                  id="firstName"
+                  name="firstName"
+                  value={formData.firstName}
                   onChange={handleChange}
                   className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm"
                 />
               </div>
               <div className="mt-6">
                 <label
-                  htmlFor="address"
+                  htmlFor="lastName"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Address
+                  Họ
                 </label>
                 <input
-                  id="address"
-                  name="address"
-                  value={formData.address}
+                  id="lastName"
+                  name="lastName"
+                  value={formData.lastName}
                   onChange={handleChange}
                   className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm"
                 />
@@ -181,12 +201,12 @@ export default function CheckoutForms() {
                   htmlFor="phone"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Phone
+                  Số điện thoại
                 </label>
                 <input
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
+                  id="mobileNo"
+                  name="mobileNo"
+                  value={formData.mobileNo}
                   onChange={handleChange}
                   className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm"
                 />
@@ -196,16 +216,38 @@ export default function CheckoutForms() {
                   htmlFor="notes"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Notes
+                  Trẻ được tiêm
                 </label>
-                <textarea
-                  id="notes"
-                  name="notes"
-                  value={formData.notes}
+                <select
+                  id="childId"
+                  name="childId"
+                  value={formData.childId}
                   onChange={handleChange}
-                  rows={4}
+                  className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-ind
+igo-600 sm:text-sm"
+                >
+                  <option value={0}>Chọn trẻ</option>
+                  {children.map((child) => (
+                    <option key={child.userId} value={child.userId}>
+                      {child.fullname}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mt-6">
+                <label
+                  htmlFor="notes"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  email
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   className="block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm"
-                ></textarea>
+                ></input>
               </div>
               <div className="mt-6 flex gap-3 items-center">
                 <input
@@ -217,7 +259,7 @@ export default function CheckoutForms() {
                   className="h-4 w-4 rounded border-gray-300"
                 />
                 <label htmlFor="terms" className="text-sm">
-                  I agree to the terms and conditions.
+                  Đồng ý với điều khoản sử dụng
                 </label>
               </div>
               <button

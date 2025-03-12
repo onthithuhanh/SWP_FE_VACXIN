@@ -6,6 +6,6 @@ export const getPosts = async () => {
 };
 
 export const getPostById = async (id: string) => {
-  const response = await apiClient.get(`/post/posts/${id}`);
+  const response = await apiClient.get(`/post/posts/search?id=${id}`);
   return response.data;
 };

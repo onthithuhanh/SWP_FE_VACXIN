@@ -1,15 +1,12 @@
-export interface Post {
+export interface Notification {
   id: number;
-  title: string;
-  content: string;
-  authorId: number;
-  authorName: string;
+  user: User;
+  message: string;
   createdAt: string;
-  updatedAt: string;
-  imageList: string[];
+  readStatus: boolean;
 }
 
-export interface Author {
+export interface User {
   id: number;
   parentid: string;
   username: string;
@@ -27,10 +24,11 @@ export interface Author {
   roles: Role[];
   accountNonLocked: string;
   resetToken: string;
+  avatarUrl: string;
 }
 
 export interface Role {
   name: string;
   description: string;
-//   permissions: string[];
+  permissions: string[];
 }

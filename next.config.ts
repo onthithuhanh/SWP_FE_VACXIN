@@ -5,7 +5,13 @@ const nextConfig: NextConfig = {
   // tStrictMode: true,
 
   images: {
-    domains: ["i.pinimg.com", "vnvc.vn", "via.placeholder.com","*"],
+    domains: [
+      "i.pinimg.com",
+      "vnvc.vn",
+      "via.placeholder.com",
+      "res.cloudinary.com",
+      "avatars.githubusercontent.com",
+    ],
   },
 };
 

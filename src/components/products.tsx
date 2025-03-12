@@ -54,7 +54,7 @@ export default function Products() {
                     {product.title}
                   </Link>
                 </h3>
-                <p className="text-sm text-gray-500">{product.description}</p>
+                <p className="text-sm text-gray-500 line-clamp-2">{product.description}</p>
                 <div className="flex flex-1 flex-col justify-end">
                   <p className="text-sm italic text-gray-500">
                     Dạng vắc xin:{product.categoryName}

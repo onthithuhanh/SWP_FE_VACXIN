@@ -1,7 +1,6 @@
 // src/services/userService.ts
-import { FormData, User, VerifyUser } from "@/lib/users";
+import { FormDataCreateUser, User, VerifyUser } from "@/lib/users";
 import apiClient from "./api";
-
 export const getMyInfo = async () => {
   const response = await apiClient.get(`/user/myInfo`);
   return response.data;
@@ -26,7 +25,7 @@ export const getUserById = async (id: string) => {
   return response.data;
 };
 
-export const createUser = async (userData: FormData) => {
+export const createUser = async (userData: FormDataCreateUser) => {
   const response = await apiClient.post("/auth/createUser", userData);
   return response.data;
 };
@@ -41,15 +40,44 @@ export const deleteUser = async (id: string) => {
 };
 
 export const getUserVaccinationHistory = async (id: string) => {
-    const response = await apiClient.get(`/users/${id}/vaccination-history`);
-    return response.data;
+  const response = await apiClient.get(`/users/${id}/vaccination-history`);
+  return response.data;
 };
 
-export const updateUserBooking = async (id: string, bookingData: string,) => {
-    const response = await apiClient.put(`/users/${id}/update-booking`, bookingData,);
-    return response.data;
+export const updateUserBooking = async (id: string, bookingData: string) => {
+  const response = await apiClient.put(
+    `/users/${id}/update-booking`,
+    bookingData
+  );
+  return response.data;
 };
 
 export const deleteUserBooking = async (id: string) => {
-    await apiClient.delete(`/users/${id}/delete-booking`);
+  await apiClient.delete(`/users/${id}/delete-booking`);
+};
+
+export const createChild = async (childData: {
+  fullname: string;
+  bod: string;
+  gender: string;
+  height: number;
+  weight: number;
+  relationshipType: string;
+  avatar: File | null;
+}) => {
+  const formData = new FormData();
+  if (childData.avatar) {
+    formData.append("avatar", childData.avatar);
+  }
+
+  const response = await apiClient.post(
+    `/user/child/create?fullname=${childData.fullname}&bod=${childData.bod}&gender=${childData.gender}&height=${childData.height}&weight=${childData.weight}&relationshipType=${childData.relationshipType}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
 };

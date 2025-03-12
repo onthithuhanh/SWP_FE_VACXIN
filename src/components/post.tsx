@@ -17,7 +17,8 @@ export default function Posts() {
       console.error(error);
     }
   }, []);
-
+  console.log(products);
+  
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
@@ -35,8 +36,8 @@ export default function Posts() {
               className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
             >
               <img
-                alt={product.imageUrl}
-                src={product.imageUrl}
+                alt={product.imageList[0]}
+                src={product.imageList[0]}
                 className="aspect-[3/4] w-full bg-gray-200 group-hover:opacity-75 sm:aspect-auto h-36"
               />
               <div className="flex flex-1 flex-col space-y-2 p-4">
@@ -46,7 +47,9 @@ export default function Posts() {
                     {product.title}
                   </Link>
                 </h3>
-                <p className="text-sm text-gray-500">{product.content}</p>
+                <p className="text-sm text-gray-500 line-clamp-2">
+                  {product.content}
+                </p>
                 <div className="flex flex-1 flex-col justify-end"></div>
               </div>
             </div>

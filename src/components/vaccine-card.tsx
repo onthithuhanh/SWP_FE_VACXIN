@@ -28,7 +28,7 @@ export function VaccineCard({
       <div className="p-4">
         <div className="text-sm text-gray-600 mb-3">
           Tác dụng phụ:
-          <div className="mt-1">{sideEffects}</div>
+          <div className="mt-1 line-clamp-2">{sideEffects}</div>
         </div>
         <button
           onClick={onSelect}

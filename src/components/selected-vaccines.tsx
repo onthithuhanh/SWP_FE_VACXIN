@@ -9,7 +9,7 @@ export function SelectedVaccines({
   vaccines,
   onRemove,
 }: SelectedVaccinesProps) {
-//   const total = vaccines.reduce((sum, vaccine) => sum + vaccine.price, 0);
+  //   const total = vaccines.reduce((sum, vaccine) => sum + vaccine.price, 0);
 
   return (
     <div className="bg-white rounded-lg shadow-sm p-4">
@@ -54,7 +54,17 @@ export function SelectedVaccines({
       </div>
 
       {vaccines.length > 0 && (
-        <button className="w-full bg-[#F5A623] text-black font-medium py-3 px-4 rounded mt-4 hover:bg-[#e69816] transition-colors">
+        <button
+          onClick={() => {
+            const orderDetails = vaccines.map((vaccine) => (
+              vaccine
+            ));
+            window.location.href = `/checkout?order=${encodeURIComponent(
+              JSON.stringify(orderDetails)
+            )}`;
+          }}
+          className="w-full bg-[#F5A623] text-black font-medium py-3 px-4 rounded mt-4 hover:bg-[#e69816] transition-colors"
+        >
           ĐĂNG KÝ MŨI TIÊM
         </button>
       )}

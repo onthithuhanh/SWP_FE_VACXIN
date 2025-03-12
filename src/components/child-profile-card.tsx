@@ -1,11 +1,15 @@
-import { Children } from "@/lib/children";
-import { User } from "lucide-react";
+import { Children } from "@/lib/children"; 
 import Link from "next/link";
 
-export function ChildProfileCard({ userid, fullname, bod }: Children) {
+export function ChildProfileCard({
+  userId,
+  fullname,
+  birthDate,
+  avatarUrl,
+}: Children) {
   return (
     <Link
-      href={`/children-profile/${userid}`}
+      href={`/children-profile/${userId}`}
       className="relative bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group"
     >
       {/* Decorative top border */}
@@ -15,10 +19,15 @@ export function ChildProfileCard({ userid, fullname, bod }: Children) {
         <div className="flex-shrink-0">
           <div className="relative">
             <div className="w-24 h-24 rounded-xl bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center border-2 border-purple-100">
-              <User className="w-12 h-12 text-purple-400" />
+              {/* <User className="w-12 h-12 text-purple-400" /> */}
+              <img
+                alt={avatarUrl}
+                src={avatarUrl}
+                className="aspect-[3/4] w-12 h-12 bg-gray-200 group-hover:opacity-75 sm:aspect-auto "
+              />
             </div>
             <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full text-xs text-white shadow-sm">
-              ID:{userid}
+              ID:{userId}
             </div>
           </div>
         </div>
@@ -34,7 +43,9 @@ export function ChildProfileCard({ userid, fullname, bod }: Children) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-blue-50 rounded-lg p-3">
               <label className="text-sm text-blue-600">Ngày sinh:</label>
-              {bod ? new Date(bod).toLocaleDateString("vi-VN") : "---"}
+              {birthDate
+                ? new Date(birthDate).toLocaleDateString("vi-VN")
+                : "---"}
             </div>
           </div>
         </div>
