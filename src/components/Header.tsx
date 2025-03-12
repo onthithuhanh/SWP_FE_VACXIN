@@ -282,6 +282,13 @@ export default function Header() {
                         </DropdownMenuItem> */}
                         <DropdownMenuItem
                           onClick={() => {
+                            router.push("/thong-bao");
+                          }}
+                        >
+                         Thông báo
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
                             router.push("/children-profile");
                           }}
                         >
