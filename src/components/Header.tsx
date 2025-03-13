@@ -285,7 +285,7 @@ export default function Header() {
                             router.push("/thong-bao");
                           }}
                         >
-                         Thông báo
+                          Thông báo
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => {
@@ -293,6 +293,13 @@ export default function Header() {
                           }}
                         >
                           Hồ sơ trẻ em
+                        </DropdownMenuItem> 
+                        <DropdownMenuItem
+                          onClick={() => {
+                            router.push("/feedback");
+                          }}
+                        >
+                          Đánh giá của tôi 
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => {
