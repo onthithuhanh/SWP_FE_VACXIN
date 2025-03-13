@@ -21,7 +21,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { OrderDetail, OrderHistory } from "@/lib/histor";
-import { getOrderById } from "@/api/order"; 
+import { getOrderById, postReaction } from "@/api/order";
 
 // Common symptoms after vaccination
 const commonSymptoms = [
@@ -47,7 +47,9 @@ export default function ReportReactionPage() {
   );
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
   const [otherSymptoms, setOtherSymptoms] = useState("");
-  const [reactionSeverity, setReactionSeverity] = useState("mild");
+  const [reactionSeverity, setReactionSeverity] = useState(
+    "Nhẹ (không ảnh hưởng đến sinh hoạt)"
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -56,8 +58,8 @@ export default function ReportReactionPage() {
       const response = await getOrderById(orderId);
       setOrder(response.result);
       setLoading(false);
+      setSelectedDetail(response?.result?.orderDetails[0]);
       console.log(response.result);
-      
     } catch (error) {
       console.error(error);
     }
@@ -67,7 +69,7 @@ export default function ReportReactionPage() {
     fetchProducts();
   }, [fetchProducts]);
 
-  const handleSymptomToggle = (symptomId:string) => {
+  const handleSymptomToggle = (symptomId: string) => {
     setSelectedSymptoms((prev) => {
       if (prev.includes(symptomId)) {
         return prev.filter((id) => id !== symptomId);
@@ -87,6 +89,7 @@ export default function ReportReactionPage() {
 
     try {
       // Prepare the data to be sent
+
       const reportData: ReportData = {
         symptoms: [
           ...selectedSymptoms.map((id) => {
@@ -94,16 +97,23 @@ export default function ReportReactionPage() {
             return symptom ? symptom.label : "";
           }),
           ...(otherSymptoms ? [otherSymptoms] : []),
+          reactionSeverity,
         ].join(", "),
       };
 
       // In a real app, you would send this data to your API
-      console.log("Submitting report:", reportData);
+      console.log("Submitting report:", selectedDetail?.id, reportData);
+      if (selectedDetail?.id) {
+        postReaction(selectedDetail.id, reportData).then(() => {
+          setIsSubmitted(true);
+        });
+      } else {
+        console.error("Selected detail ID is undefined");
+      alert(
+        "Có lỗi xảy ra khi gửi báo cáo. Vui lòng thử lại sau.Selected detail ID is undefined"
+      );
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      setIsSubmitted(true);
+      } 
     } catch (error) {
       console.error("Error submitting report:", error);
       alert("Có lỗi xảy ra khi gửi báo cáo. Vui lòng thử lại sau.");
@@ -303,20 +313,29 @@ export default function ReportReactionPage() {
                 onValueChange={setReactionSeverity}
               >
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="mild" id="severity-mild" />
+                  <RadioGroupItem
+                    value="Nhẹ (không ảnh hưởng đến sinh hoạt)"
+                    id="severity-mild"
+                  />
                   <Label htmlFor="severity-mild" className="cursor-pointer">
                     Nhẹ (không ảnh hưởng đến sinh hoạt)
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="moderate" id="severity-moderate" />
+                  <RadioGroupItem
+                    value="Trung bình (ảnh hưởng đến sinh hoạt nhưng không cần nhập viện)"
+                    id="severity-moderate"
+                  />
                   <Label htmlFor="severity-moderate" className="cursor-pointer">
                     Trung bình (ảnh hưởng đến sinh hoạt nhưng không cần nhập
                     viện)
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="severe" id="severity-severe" />
+                  <RadioGroupItem
+                    value="Nặng (cần can thiệp y tế hoặc nhập viện)"
+                    id="severity-severe"
+                  />
                   <Label htmlFor="severity-severe" className="cursor-pointer">
                     Nặng (cần can thiệp y tế hoặc nhập viện)
                   </Label>
