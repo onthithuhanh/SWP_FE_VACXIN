@@ -23,3 +23,12 @@ export const getUrlPayment = async (url: string, data: Order) => {
 
   return urlpayment.data;
 };
+export const getOrders = async () => {
+  const response = await apiClient.get(`/order/user-orders`);
+  return response.data;
+};
+
+export const getOrderById = async (id: string) => {
+  const response = await apiClient.get(`/order/order/${id}`);
+  return response.data;
+};
