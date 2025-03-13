@@ -31,6 +31,10 @@ export type UserLoginForm = {
   username: string;
   password: string;
 };
+export interface FeedbackFrom {
+  rating: number;
+  comment: string;
+}
 
 export interface UserLogin {
   refresh: string;
