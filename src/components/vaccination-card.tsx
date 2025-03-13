@@ -5,28 +5,15 @@ import {
   ChevronDown,
   ChevronUp,
   Syringe,
-  Calendar,
-  User,
-  MapPin,
+  Calendar, 
 } from "lucide-react";
-
-interface VaccinationCardProps {
-  vaccineName: string;
-  date: string;
-  dose: string;
-  doctor: string;
-  location: string;
-  nextDose?: string;
-}
+import { HistoryChildren } from "@/lib/children";
 
 export function VaccinationCard({
   vaccineName,
-  date,
-  dose,
-  doctor,
-  location,
-  nextDose,
-}: VaccinationCardProps) {
+  vaccinationDate,
+  quantity, 
+}: HistoryChildren) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -41,7 +28,9 @@ export function VaccinationCard({
             <h3 className="font-semibold text-lg text-blue-600">
               {vaccineName}
             </h3>
-            <p className="text-gray-600 text-sm">Ngày tiêm: {date}</p>
+            <p className="text-gray-600 text-sm">
+              Ngày tiêm: {vaccinationDate}
+            </p>
           </div>
         </div>
         <div className="text-blue-500">
@@ -56,32 +45,9 @@ export function VaccinationCard({
               <Calendar className="text-blue-500" size={18} />
               <div>
                 <p className="text-sm text-gray-600">Liều lượng:</p>
-                <p className="font-medium">{dose}</p>
+                <p className="font-medium">{quantity}</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <User className="text-blue-500" size={18} />
-              <div>
-                <p className="text-sm text-gray-600">Bác sĩ:</p>
-                <p className="font-medium">{doctor}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="text-blue-500" size={18} />
-              <div>
-                <p className="text-sm text-gray-600">Địa điểm:</p>
-                <p className="font-medium">{location}</p>
-              </div>
-            </div>
-            {nextDose && (
-              <div className="flex items-center gap-2">
-                <Calendar className="text-green-500" size={18} />
-                <div>
-                  <p className="text-sm text-gray-600">Mũi tiêm tiếp theo:</p>
-                  <p className="font-medium text-green-600">{nextDose}</p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       )}

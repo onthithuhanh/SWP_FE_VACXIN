@@ -1,44 +1,21 @@
 "use client";
-import { getMyChildrenId } from "@/api/childrenApi";
+import { getMyChildrenHistoryId, getMyChildrenId } from "@/api/childrenApi";
 import { VaccinationCard } from "@/components/vaccination-card";
-import { Children } from "@/lib/children";
-import { User, Calendar,  } from "lucide-react";
+import { Children, HistoryChildren, UpcomingChildren } from "@/lib/children";
+import { User, Calendar } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 // Dữ liệu mẫu cho các mũi tiêm
-const vaccinations = [
-  {
-    id: 1,
-    vaccineName: "Vắc-xin 6 trong 1 (DPT-HepB-Hib-IPV)",
-    date: "15/03/2020",
-    dose: "Liều 1/3",
-    doctor: "Bs. Nguyễn Văn X",
-    location: "Trung tâm Y tế Quận 1",
-    nextDose: "15/05/2020",
-  },
-  {
-    id: 2,
-    vaccineName: "Vắc-xin Rotavirus",
-    date: "01/04/2020",
-    dose: "Liều 1/2",
-    doctor: "Bs. Trần Thị Y",
-    location: "Bệnh viện Nhi Đồng 1",
-    nextDose: "01/06/2020",
-  },
-  {
-    id: 3,
-    vaccineName: "Vắc-xin Sởi - Quai bị - Rubella (MMR)",
-    date: "10/01/2021",
-    dose: "Liều duy nhất",
-    doctor: "Bs. Lê Văn Z",
-    location: "Trung tâm Tiêm chủng VNVC",
-  },
-];
 
 export default function ChildVaccinationDetails() {
   const [children, setChildren] = useState<Children | null>(null);
+  const [upcomingChildren, setUpcomingChildren] =
+    useState<UpcomingChildren | null>(null);
+  const [childrenHistory, setChildrenHistory] =
+    useState<HistoryChildren | null>(null);
   const { id } = useParams<{ id: string }>();
+
   const fetchChildrenId = useCallback(async () => {
     try {
       const response = await getMyChildrenId(id);
@@ -47,11 +24,31 @@ export default function ChildVaccinationDetails() {
       console.error(error);
     }
   }, [id]);
+
+  const fetchhildrenHistory = useCallback(async () => {
+    try {
+      const ChildrenHistory = await getMyChildrenHistoryId(id);
+      setChildrenHistory(ChildrenHistory.result || null);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [id]);
+
+  const fetchhildrenUpcoming = useCallback(async () => {
+    try {
+      const ChildrenHistory = await getMyChildrenHistoryId(id);
+      setUpcomingChildren(ChildrenHistory.result || null);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [id]);
   console.log(children);
 
   useEffect(() => {
     fetchChildrenId();
-  }, [fetchChildrenId]);
+    fetchhildrenHistory();
+    fetchhildrenUpcoming();
+  }, [fetchChildrenId, fetchhildrenHistory, fetchhildrenUpcoming]);
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-8">
       <div className="container mx-auto px-4">
@@ -93,13 +90,27 @@ export default function ChildVaccinationDetails() {
         </div>
 
         <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Mũi tiêm tiếp theo
+        </h2>
+
+        <div className="space-y-4">
+          {upcomingChildren != null &&
+            Array.isArray(upcomingChildren) &&
+            upcomingChildren.map((vaccination) => (
+              <VaccinationCard key={vaccination.id*3} {...vaccination} />
+            ))}
+        </div>
+
+        <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
           Lịch sử tiêm chủng
         </h2>
 
         <div className="space-y-4">
-          {vaccinations.map((vaccination) => (
-            <VaccinationCard key={vaccination.id} {...vaccination} />
-          ))}
+          {childrenHistory != null &&
+            Array.isArray(childrenHistory) &&
+            childrenHistory.map((vaccination) => (
+              <VaccinationCard key={vaccination.id*123} {...vaccination} />
+            ))}
         </div>
       </div>
     </div>

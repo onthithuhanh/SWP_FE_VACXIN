@@ -62,7 +62,7 @@ const navigation = {
     { name: "Thông tin cơ sở ", href: "/ " },
     { name: "Cẩm nang tiêm chủng  ", href: "/ " },
     { name: "Dịch vụ  ", href: "/vaccine" },
-    { name: "Bảng giá ", href: "/ " },
+    { name: "Bảng giá ", href: "/bang-gia" },
   ],
 };
 
@@ -246,7 +246,7 @@ export default function Header() {
 
                 {user?.username ? (
                   <div className="ml-auto gap-4 flex items-center">
-                    <div className="ml-4 flow-root lg:ml-6">
+                    {/* <div className="ml-4 flow-root lg:ml-6">
                       <Link
                         href="/cart"
                         className="group -m-2 flex items-center p-2"
@@ -258,7 +258,7 @@ export default function Header() {
 
                         <span className="sr-only">items in cart, view bag</span>
                       </Link>
-                    </div>
+                    </div> */}
                     <DropdownMenu>
                       <DropdownMenuTrigger>
                         <Avatar>

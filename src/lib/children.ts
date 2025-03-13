@@ -8,6 +8,19 @@ export interface Children {
   weight: string | null;
   relatives: Rela[];
 }
+export interface HistoryChildren {
+  orderDetailId: number;
+  vaccineName: string;
+  vaccinationDate: string;
+  quantity: number;
+}
+export interface UpcomingChildren {
+  orderDetailId: number;
+  vaccineName: string;
+  vaccinationDate: string;
+  remainingDoses: number;
+}
+
 
 export interface Rela {
   relativeId: number;
