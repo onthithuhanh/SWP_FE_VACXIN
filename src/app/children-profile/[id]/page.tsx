@@ -1,5 +1,5 @@
 "use client";
-import { getMyChildrenHistoryId, getMyChildrenId } from "@/api/childrenApi";
+import { getMyChildHistoryId, getMyChildrenId } from "@/api/childrenApi";
 import { VaccinationCard } from "@/components/vaccination-card";
 import { Children, HistoryChildren, UpcomingChildren } from "@/lib/children";
 import { User, Calendar } from "lucide-react";
@@ -15,34 +15,34 @@ export default function ChildVaccinationDetails() {
   const [childrenHistory, setChildrenHistory] =
     useState<HistoryChildren | null>(null);
   const { id } = useParams<{ id: string }>();
+  const childId = Number.parseInt(id);
 
   const fetchChildrenId = useCallback(async () => {
     try {
-      const response = await getMyChildrenId(id);
+      const response = await getMyChildrenId(childId);
       setChildren(response.result);
     } catch (error) {
       console.error(error);
     }
-  }, [id]);
+  }, [childId]);
 
   const fetchhildrenHistory = useCallback(async () => {
     try {
-      const ChildrenHistory = await getMyChildrenHistoryId(id);
+      const ChildrenHistory = await getMyChildHistoryId(childId);
       setChildrenHistory(ChildrenHistory.result || null);
     } catch (error) {
       console.error(error);
     }
-  }, [id]);
+  }, [childId]);
 
   const fetchhildrenUpcoming = useCallback(async () => {
     try {
-      const ChildrenHistory = await getMyChildrenHistoryId(id);
+      const ChildrenHistory = await getMyChildHistoryId(childId);
       setUpcomingChildren(ChildrenHistory.result || null);
     } catch (error) {
       console.error(error);
     }
-  }, [id]);
-  console.log(children);
+  }, [childId]);
 
   useEffect(() => {
     fetchChildrenId();
@@ -62,7 +62,7 @@ export default function ChildVaccinationDetails() {
                 <h1 className="text-3xl font-bold text-gray-800 mb-2">
                   {children?.fullname}
                 </h1>
-                <p className="text-gray-600 mb-4">Mã số: {children?.userId}</p>
+                <p className="text-gray-600 mb-4">Mã số: {children?.childId}</p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center gap-2 text-gray-600">
                     <Calendar size={20} />

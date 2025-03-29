@@ -1,73 +1,113 @@
-import Image from "next/image";
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { BadgeIcon, CalendarIcon, StethoscopeIcon, UsersIcon, ArrowRightIcon } from "lucide-react"
 
-const incentives = [
+export const incentives = [
   {
-    name: "Đảm bảo an toàn",
-    imageSrc: "/img/a2.png",
-    description:
-      "Chúng tôi đảm bảo tất cả các loại vacxin đều được kiểm định và chứng nhận an toàn cho trẻ nhỏ.",
+    id: 1,
+    title: "Khám sức khỏe miễn phí",
+    description: "Nhận một lần khám sức khỏe tổng quát miễn phí sau khi hoàn thành lịch tiêm chủng đầy đủ.",
+    icon: "stethoscope",
+    color: "bg-blue-500",
+    link: "/incentives/health-checkup",
+    isActive: true,
   },
   {
-    name: "Tận tâm chăm sóc",
-    imageSrc: "/img/a1.png",
-    description:
-      "Đội ngũ y bác sĩ của chúng tôi luôn tận tâm chăm sóc và tư vấn cho bạn về các loại vacxin phù hợp nhất.",
+    id: 2,
+    title: "Chương trình khách hàng thân thiết",
+    description: "Tích điểm với mỗi lần tiêm chủng và đổi lấy các ưu đãi hấp dẫn từ các đối tác của chúng tôi.",
+    icon: "badge",
+    color: "bg-purple-500",
+    link: "/incentives/loyalty",
+    isActive: true,
   },
   {
-    name: "Dịch vụ chuyên nghiệp",
-    imageSrc: "/img/a3.jpg",
-    description:
-      "Chúng tôi cung cấp dịch vụ chuyên nghiệp, đảm bảo quá trình tiêm chủng diễn ra an toàn và hiệu quả.",
+    id: 3,
+    title: "Ưu đãi gói gia đình",
+    description: "Giảm giá 15% khi đăng ký tiêm chủng cho 3 thành viên gia đình trở lên.",
+    icon: "users",
+    color: "bg-green-500",
+    link: "/incentives/family-package",
+    isActive: true,
   },
-];
+  {
+    id: 4,
+    title: "Đặt lịch ưu tiên",
+    description: "Khách hàng thường xuyên được ưu tiên đặt lịch tiêm chủng vào các khung giờ đẹp.",
+    icon: "calendar",
+    color: "bg-amber-500",
+    link: "/incentives/priority-booking",
+    isActive: true,
+  },
+]
 
-export default function Incentives() {
+
+export function Incentives() {
+  const renderIcon = (iconName: string, className: string) => {
+    switch (iconName) {
+      case "stethoscope":
+        return <StethoscopeIcon className={className} />
+      case "badge":
+        return <BadgeIcon className={className} />
+      case "users":
+        return <UsersIcon className={className} />
+      case "calendar":
+        return <CalendarIcon className={className} />
+      default:
+        return <ArrowRightIcon className={className} />
+    }
+  }
+
   return (
-    <div className="bg-gray-50">
-      <div className="mx-auto max-w-7xl py-24 sm:px-2 sm:py-32 lg:px-4">
-        <div className="mx-auto max-w-2xl px-4 lg:max-w-none">
-          <div className="grid grid-cols-1 items-center gap-x-16 gap-y-10 lg:grid-cols-2">
-            <div>
-                <h2 className="text-4xl font-bold tracking-tight text-gray-900">
-                Chúng tôi xây dựng dịch vụ dựa trên sự an toàn của trẻ nhỏ
-                </h2>
-                <p className="mt-4 text-gray-500">
-                Tại Vacxin cho trẻ nhỏ, chúng tôi cam kết mang đến những loại vacxin an toàn và hiệu quả nhất cho con bạn. Sự an toàn và sức khỏe của trẻ nhỏ luôn là ưu tiên hàng đầu của chúng tôi.
-                </p>
-            </div>
-            <Image
-              width={500}
-              height={500}
-              alt=""
-              src="/img/a2.png"
-              className="aspect-[3/2] w-full rounded-lg bg-gray-100 object-cover"
-            />
-          </div>
-          <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-3">
-            {incentives.map((incentive) => (
-              <div key={incentive.name} className="sm:flex lg:block">
-                <div className="sm:shrink-0">
-                  <Image
-                    alt=""
-                    width={500}
-                    height={500}
-                    src={incentive.imageSrc}
-                    className="size-16"
-                  />
-                </div>
-                <div className="mt-4 sm:ml-6 sm:mt-0 lg:ml-0 lg:mt-6">
-                  <h3 className="text-sm font-medium text-gray-900">
-                    {incentive.name}
-                  </h3>
-                  <p className="mt-2 text-sm text-gray-500">
-                    {incentive.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+    <section className="w-full py-12 md:py-16 bg-gradient-to-b from-white to-blue-50">
+      <div className="container mx-auto">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-bold tracking-tight mb-2">Ưu Đãi Đặc Biệt</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Chúng tôi cung cấp nhiều ưu đãi hấp dẫn cho khách hàng tiêm chủng tại Vaxchild. Hãy khám phá các lợi ích
+            bạn có thể nhận được.
+          </p>
         </div>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {incentives.map((incentive) => (
+            <Card
+              key={incentive.id}
+              className="overflow-hidden border-t-4 transition-all hover:shadow-lg"
+              style={{ borderTopColor: incentive.color.replace("bg-", "var(--") + ")" }}
+            >
+              <CardHeader className="pb-2">
+                <div className={`w-12 h-12 rounded-full ${incentive.color} flex items-center justify-center mb-4`}>
+                  {renderIcon(incentive.icon, "h-6 w-6 text-white")}
+                </div>
+                <CardTitle>{incentive.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="pb-4">
+                <p className="text-sm text-muted-foreground">{incentive.description}</p>
+              </CardContent>
+              <CardFooter>
+                {/* <Button
+                  variant="ghost"
+                  className="p-0 h-auto font-medium text-primary flex items-center gap-1 hover:gap-2 transition-all"
+                  asChild
+                >
+                  <Link href={incentive.link}>
+                    Tìm hiểu thêm <ArrowRightIcon className="h-4 w-4" />
+                  </Link>
+                </Button> */}
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+
+        {/* <div className="mt-10 text-center">
+          <Button size="lg" asChild>
+            <Link href="/incentives">Xem tất cả ưu đãi</Link>
+          </Button>
+        </div> */}
       </div>
-    </div>
-  );
+    </section>
+  )
 }
+

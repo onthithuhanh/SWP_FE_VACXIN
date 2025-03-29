@@ -41,6 +41,7 @@ export interface UserLogin {
   access: string;
   userid: number;
   username: string;
+  fullname: string;
   email: string;
   phone: string;
   address: string;

@@ -6,6 +6,6 @@ export const postfeedback = async (data: FeedbackFrom) => {
   return response.data;
 };
 export const getfeedback = async () => {
-  const response = await apiClient.get(`/feedback/feedback`);
+  const response = await apiClient.get(`/feedback/feedback/all`);
   return response.data;
 };

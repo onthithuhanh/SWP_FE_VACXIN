@@ -1,34 +1,46 @@
 "use client";
-import CategoryPreviews from "@/components/CategoryPreviews";
 import Products from "@/components/products";
-import { CardContent } from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
-import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
-import { useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Posts from "@/components/post";
+import { Post } from "@/type/post";
+import { getPosts } from "@/api/postApi";
+import { PostCarousel } from "@/components/PostCarousel";
+import { Incentives } from "@/components/Incentives";
+import { Feedback } from "@/components/Feedback";
 
-// Định nghĩa type cho dữ liệu gốc từ API
-const images = [
-  "https://vnvc.vn/wp-content/uploads/2024/10/banner-uu-dai-vac-xin-zona-than-kinh-mb.jpg",
-  "https://vnvc.vn/wp-content/uploads/2025/02/banner-vnvc-tang-cuong-gio-hoat-dong-mb.jpg",
-  "https://vnvc.vn/wp-content/uploads/2025/01/le-ky-ket-hop-tac-thiet-ke-nha-may-vac-xin-vnvc.jpg",
-];
+// const images = [
+//   "https://vnvc.vn/wp-content/uploads/2024/10/banner-uu-dai-vac-xin-zona-than-kinh-mb.jpg",
+//   "https://vnvc.vn/wp-content/uploads/2025/02/banner-vnvc-tang-cuong-gio-hoat-dong-mb.jpg",
+//   "https://vnvc.vn/wp-content/uploads/2025/01/le-ky-ket-hop-tac-thiet-ke-nha-may-vac-xin-vnvc.jpg",
+// ];
 
 export default function Home() {
+
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  const fetchPosts = useCallback(async () => {
+    try {
+      const response = await getPosts();
+      setPosts(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+  
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
+
   const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
   return (
-    <div className="bg-white">
-      <div className="mx-auto px-4 sm:px-6 max-w-7xl lg:px-8 mt-4">
+    <div className="flex-1 mt-4">
+      {/* <div className="mx-auto px-4 sm:px-6 max-w-7xl lg:px-8 mt-4">
         <Carousel
           plugins={[plugin.current]}
           onMouseEnter={plugin.current.stop}
           onMouseLeave={plugin.current.reset}
-          className="w-full p-4"
+          className="w-full"
         >
           <CarouselContent>
             {images.map((image, index) => (
@@ -44,13 +56,15 @@ export default function Home() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          {/* <CarouselPrevious />
-          <CarouselNext /> */}
         </Carousel>
-      </div>
-      <CategoryPreviews />
-      <Posts />
+      </div> */}
+
+
+      <PostCarousel posts={posts.slice(0,3)} />
+      <Incentives />
+      <Posts posts={posts.slice(0,6)} />
       <Products />
+      <Feedback />
     </div>
   );
 }

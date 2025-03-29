@@ -1,17 +1,9 @@
 "use client";
-
 import { useCallback, useEffect, useState } from "react";
 import { VaccineCard } from "@/components/vaccine-card";
 import { SelectedVaccines } from "@/components/selected-vaccines";
 import { Menu, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
 import { Product } from "@/lib/product";
 import { getVaccines } from "@/api/vacxin";
 
@@ -63,22 +55,6 @@ export default function Vaccines() {
           </div>
         </div>
       </div>
-
-      {/* <div className="mb-6">
-        <label className="text-sm text-gray-600 mb-2 block">
-          Hiển thị theo
-        </label>
-        <Select defaultValue="all">
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="Tất cả" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Tất cả</SelectItem>
-            <SelectItem value="price-asc">Giá tăng dần</SelectItem>
-            <SelectItem value="price-desc">Giá giảm dần</SelectItem>
-          </SelectContent>
-        </Select>
-      </div> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <div className="lg:col-span-3">

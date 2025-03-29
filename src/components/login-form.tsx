@@ -22,7 +22,8 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [, setToken] = useStorage<string|null>("token", null);
+  const [_, setToken] = useStorage<string | null>("token", null);
+
 
   const router = useRouter();
 
@@ -38,12 +39,9 @@ export function LoginForm({
   const onSubmit = async (data: UserLoginForm) => {
     setLoading(true);
     try {
-      // Thêm giá trị mặc định cho `address` và `image`
-      // Gọi API để đăng nhập
       const response = await authLogin(data);
-      console.log(response);
-      const userData = response;
-      setToken(userData.result.token);
+      
+      setToken(response.result.token);
 
       router.push("/");
       toast({
@@ -158,10 +156,6 @@ export function LoginForm({
           </div>
         </CardContent>
       </Card>
-      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </div>
     </div>
   );
 }

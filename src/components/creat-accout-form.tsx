@@ -249,17 +249,6 @@ export function CreatAccoutForm({
           </div>
         </CardContent>
       </Card>
-      <div className="text-center text-xs text-muted-foreground">
-        By continuing, you agree to the{" "}
-        <a href="#" className="underline">
-          Terms of Service
-        </a>{" "}
-        and{" "}
-        <a href="#" className="underline">
-          Privacy Policy
-        </a>
-        .
-      </div>
     </div>
   );
 }

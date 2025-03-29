@@ -3,10 +3,10 @@ import { getVaccines } from "@/api/vacxin";
 import { Product } from "@/lib/product";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-// Định nghĩa type cho dữ liệu gốc từ API
+import { Button } from "./ui/button";
+import { ChevronRightIcon } from "lucide-react";
 
 export default function Products() {
-  // Sử dụng type đã định nghĩa
   const [products, setProducts] = useState<Product[]>([]);
 
   const fetchProducts = useCallback(async () => {
@@ -21,6 +21,7 @@ export default function Products() {
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
+  
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -28,16 +29,15 @@ export default function Products() {
           <h2 className="text-2xl pb-2 font-bold tracking-tight text-gray-900">
             DANH MỤC VẮC XIN
           </h2>
-          <Link
-            href="/product"
-            className="text-blue-500 hover:underline"
-          >
-            tất cả sản phẩm
-          </Link>
+          <Button variant="ghost" className="gap-1" asChild>
+            <Link href="/vaccines">
+              Xem thêm <ChevronRightIcon className="h-4 w-4" />
+            </Link>
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
-          {products.map((product) => (
+          {products.slice(0, 6).map((product) => (
             <div
               key={product.id}
               className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
